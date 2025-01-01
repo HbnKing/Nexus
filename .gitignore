@@ -1,0 +1,7 @@
+*.class
+target/
+*.log
+temp*/
+.idea/
+*.iml
+**/*.bak
