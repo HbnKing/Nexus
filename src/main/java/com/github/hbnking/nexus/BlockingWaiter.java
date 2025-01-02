@@ -1,29 +1,26 @@
 package com.github.hbnking.nexus;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
 // BlockingWaiter类继承自Waiter
 class BlockingWaiter implements Waiter {
-    private final Object lock = new Object();
-    private boolean condition;
+    private final ReentrantLock lock = new ReentrantLock() ;
+    private Condition notifyCondition = lock.newCondition() ;
+
+    private AtomicBoolean needSignal = new AtomicBoolean(false);
 
     @Override
     public long wait(long next, ProducerSequence put, ProcessHandler handler) {
         synchronized (lock) {
-            try {
-                while (!condition) {
-                    lock.wait();
-                }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+
         }
         return 0 ;
     }
 
     @Override
     public void signal() {
-        synchronized (lock) {
-            condition = true;
-            lock.notifyAll();
-        }
+
     }
 }

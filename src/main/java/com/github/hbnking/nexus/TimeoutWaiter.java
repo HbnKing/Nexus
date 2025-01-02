@@ -1,10 +1,19 @@
 package com.github.hbnking.nexus;
 
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
 // TimeoutWaiter类继承自Waiter
 class TimeoutWaiter implements Waiter{
-    private final Object lock = new Object();
-    private boolean condition;
-    private long timeout;
+    private ReentrantLock lock = new ReentrantLock() ;
+    private Condition notifyCondition = lock.newCondition() ;
+
+    private TimeoutException exception = new TimeoutException();
+
+    private AtomicBoolean needSignal = new AtomicBoolean(false);
+    private final long timeout;
 
     public TimeoutWaiter(long timeout) {
         this.timeout = timeout;
@@ -24,9 +33,6 @@ class TimeoutWaiter implements Waiter{
 
     @Override
     public void signal() {
-        synchronized (lock) {
-            condition = true;
-            lock.notifyAll();
-        }
+
     }
 }

@@ -6,15 +6,17 @@ class SleepingWaiter implements Waiter{
 
     @Override
     public long wait(long next, ProducerSequence put, ProcessHandler handler) {
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+
         return 0 ;
     }
 
     @Override
     public void signal() {
+    }
+
+
+    public int applywaitmethod(int counter){
+
+        return 0 ;
     }
 }
